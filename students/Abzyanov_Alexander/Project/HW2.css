@@ -1,8 +1,11 @@
+
+
 .cart-button {
     width: 100px;
     font-size: 20px;
     float: right;
     margin-right: 50px;
+    
     
 }
 
@@ -22,7 +25,7 @@
 body {
     margin: 10px auto;
     width: 800px;
-
+    
 }
 
 header {
@@ -34,17 +37,30 @@ header {
 main {
     margin: 10px auto;
     height: 250px;
-    background-color: lightgoldenrodyellow;
+    background-color: white;
 }
 
 .goods-item {
     width: 120px;
-
+    float: left;
+    border: 1px solid black;
+    margin-left: 10px;
+    text-align: center;
+    background-color: lightgoldenrodyellow;;
+    
 }
 
 .goods-item p {
     font-size: 12px;
 
+}
+
+img {
+    max-width: 100px;
+    height: 150px;
+    display: block;
+    background-color: grey;
+    margin: 5px auto;
 }
 
 #menu {
@@ -59,5 +75,9 @@ main {
     float: left;
     margin-left: 10px;
     border: solid 1px black;
-    width: 140px;
+    width: auto;
+}
+
+.goodsAddButton:hover {
+    color: red;
 }
