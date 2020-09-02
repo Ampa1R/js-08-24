@@ -29,13 +29,8 @@ class GoodsList {
     });
     document.querySelector('.goods-list').innerHTML = listHtml;
   }
+  
   goodsPriceSum() {
-    /*
-    let result = 0;
-    for( let i=0; i<this.goods.length; i++ ) {
-      result += this.goods[i].price;
-    };
-    */
    let result = null;
    this.goods.forEach(good => {
     result += good.price;
