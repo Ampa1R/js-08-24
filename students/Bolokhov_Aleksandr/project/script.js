@@ -1,17 +1,4 @@
-const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
-
-function sendRequest(url, callback) {
-  const xhr = new XMLHttpRequest;
-
-  xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4) {
-          callback(JSON.parse(xhr.responseText));
-      }
-  }
-  xhr.open('GET', `${API}${url}`, true);
-
-  xhr.send();
-}
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/catalogData.json';
 
 class GoodsItem {
   constructor({ product_name, price }) {
@@ -32,14 +19,22 @@ class GoodsItem {
 class GoodsList {
   constructor() {
     this.goods = [];
-    this.fetchGoods();
+    this.fetchGoods().then(response => {
+      this.goods = JSON.parse(response);
+      this.render();
+    });
+
   }
 
   fetchGoods() {
-    sendRequest('/catalogData.json', (goods) => {
-      this.goods = goods;
-      this.render();
+    return new Promise ((resolve, reject) => {
+      let xhr = window.XMLHttpRequest ? new window.XMLHttpRequest() : new window.ActiveXObject;
+      xhr.open("GET", API, true);
+      xhr.onload = () => resolve(xhr.responseText);
+      xhr.onerror = () => reject(xhr.statusText);
+      xhr.send();
     });
+   
   }
 
   total() {
@@ -47,6 +42,7 @@ class GoodsList {
   }
 
   render() {
+    console.log(this.goods)
     const goodsList = this.goods.map(item => {
       const goodsItem = new GoodsItem(item);
       return goodsItem.render();
@@ -56,6 +52,7 @@ class GoodsList {
 }
 
 const goodsList = new GoodsList();
+goodsList.render();
 
 class Basket {
   constructor() {
