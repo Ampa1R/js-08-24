@@ -68,7 +68,3 @@ h3 {
 .goods-item img {
     width: 100px;
 }
-
-span:after {
-    content: "";
-}
