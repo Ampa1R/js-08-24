@@ -170,6 +170,7 @@ const app = new Vue({
   data: {
     goods: [],
     searchText: '',
+    basket: [],
   },
   created() {
     this.fetchGoods();
@@ -196,5 +197,13 @@ const app = new Vue({
           });
       });
     },
+    isVisibleCart () {
+     if (document.querySelector(".addBasketThisPage").style.display === "block") {
+      document.querySelector(".addBasketThisPage").style.display = "none"; 
+     } else if (document.querySelector(".addBasketThisPage").style.display === "none") {
+      document.querySelector(".addBasketThisPage").style.display = "block";
+     };
+    },
   },
+  
 });

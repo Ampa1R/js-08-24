@@ -12,7 +12,24 @@
 <body>
     <div id="app">
         <header>
-            <button type="button" class="cart-button">Корзина</button>
+            <button type="button" class="cart-button" @click="isVisibleCart">Корзина</button>
+            <div class="addBasketThisPage" style="display: none;">
+              <table class="tableBaskets">
+                  <thead>
+                      <tr>Номер товара</tr>
+                      <tr>Название товара</tr>
+                      <tr>Количество товара</tr>
+                      <tr>Стоимость товара</tr>
+                  </thead>
+                  <!--
+                  <body v-for="item in basket">
+                      <tr>{{ basket.length}}</tr>
+                      <tr>{{ item.product_name}}</tr>
+                      <tr>{{ item }}</tr>
+                      <tr>{{item.price}}</tr>  
+                  </body> -->
+              </table>
+            </div>
             <input type="text" class="search" v-model="searchText" />
         </header>
         <main>
