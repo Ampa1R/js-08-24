@@ -204,6 +204,12 @@ const app = new Vue({
       document.querySelector(".addBasketThisPage").style.display = "block";
      };
     },
+
+    addToBaskets () {
+      console.log(event);
+      console.log(this.goods[1]);
+
+    }
   },
-  
+
 });
