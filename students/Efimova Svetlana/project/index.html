@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,4 +41,61 @@
     <script src="scripts/script.js"></script>
 </body>
 >>>>>>> a370396b312426e1c35a5f5119432e0bcf6ae41e
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <input type="text" class="goods-search" v-model="searchLine"/>
+            <button class="search-button" type="button">Искать</button>
+            <button class="cart-button" type="button">Корзина</button>
+            <table class="basket hidden">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in filteredGoods"> 
+                        <td></td>
+                        <td>{{ item.product_name }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2">Итого:</th>
+                        <th colspan="2" class="sum">{{ countSum }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </header>
+        <main>
+            <div class="goods-list">
+                <div class="goods-item" v-if="filteredGoods.length" v-for="item in filteredGoods">
+                    <h3>{{ item.product_name }}</h3>
+                    <div class="goods-item-img"></div>
+                    <p>{{ item.price }}</p>
+                    <button class="cart-button" type="button">Добавить</button>
+                </div>
+                <p v-else>Нет данных</p>
+            </div>
+            <span class="total">{{ countSum }}</span>
+        </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="scripts/script.js"></script>
+</body>
+>>>>>>> 6ccf0fe93e54185397e6ccd4ffb4cb481a70d770
 </html>
