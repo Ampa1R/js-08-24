@@ -17,7 +17,7 @@ header {
     align-self: center;
 }
 
-.cart-button {
+.cart-button, .search-button {
     background-color: rgb(13, 109, 193);
     margin: 10px;
     padding: 13px;
@@ -25,11 +25,19 @@ header {
     color: white;
 }
 
+.search-button {
+    background-color: rgb(90, 89, 175);
+}
+
 .cart-button:hover {
     background-color: rgb(124, 163, 197);
 }
 
-.cart-button:focus {
+.search-button:hover {
+    background-color: rgb(116, 115, 180);
+}
+
+.cart-button:focus, .search-button:focus {
     outline: none;
 }
 
@@ -54,12 +62,33 @@ header {
     padding-bottom: 20px;
 }
 
-.btn_inBasket {
-    background-color: rgb(236, 236, 236);
+.btn_toBasket {
+    background-color: rgb(99, 199, 124);
     text-align: center;
     margin: 20px 0 0 0;
-    padding: 8px;
+    padding: 10px 30px;
     border-radius: 25px;
     border: 1px solid gray;
     color: rgb(26, 26, 26);
+}
+
+.table-basket {
+    position: absolute;
+    right: 5%;
+    top: 10%;
+    padding: 20px;
+    outline: 2px solid gray;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+opacity: 0;
 }

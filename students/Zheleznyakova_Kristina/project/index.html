@@ -3,21 +3,62 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <link rel="stylesheet" href="style.css">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
     <title>eShop</title>
 </head>
 
 <body>
-    <header>
-        <input type="text" class="search">
-        <button class="cart-button" type="button">Корзина</button>
-    </header>
-    <main>
-        <div class="goods-list"></div>
-    </main>    
-
-    <script src="script.js"></script>
+    <div id="app">
+        <header>
+            <input type="text" class="search" v-model.lazy='searchLine'>
+            <button class="search-button" type="button" @click='filterGoods'>Искать</button>
+            <button class="cart-button" type="button" @click='showBasket'>Корзина</button>
+        </header>
+        <main>
+            <div class="goods-list" v-if='goods.length > 0'>
+                <div class="goods-item" v-for='good in filteredGoods' :key="good.id_product">
+                    <h3>{{ good.product_name }}</h3>
+                    <p>{{ good.price }}</p>
+                    <p>id: {{ good.id_product }}</p>
+                    <button class='btn_toBasket' type="button" @click='addItemBasket(good)'>Buy</button>
+                </div>
+            </div>
+            <div v-else>Нет данных</div>
+            <transition>
+                <table class="table-basket" v-if='goods_basket.length > 0' v-bind:style='{ visibility: isVisibleCart }'>
+                    <tr>
+                        <td></td>
+                        <td>Name</td>
+                        <td>Amount</td>
+                        <td>Price</td>
+                        <td></td>
+                    </tr>
+                    <tr v-for='good in goods_basket' :key="good.id_product">
+                        <td></td>
+                        <td>{{ good.product_name }}</td>
+                        <td>{{ good.quantity }}</td>
+                        <td>{{ good.price * good.quantity }}</td>
+                        <td><button type="button" @click='remove_item(good)'>Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>Итого</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ total }}</td>
+                    </tr>
+                </table>
+                <table class="table-basket" v-else v-bind:style='{ visibility: isVisibleCart }'>
+                    <tr>
+                        <td>Нет товаров в корзине</td>
+                    </tr>
+                </table>
+            </transition>
+        </main>
+    </div>
 </body>
 
 </html>
