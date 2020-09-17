@@ -1,10 +1,12 @@
 <template>
   <div id="app">
     <Header >
-      <SearchText :searchText="searchText" \>
-        <Basket :basket="basket" \>
+      <SearchText :searchText="searchText" />
+        <Basket :basket="basket" />
     </Header>
     <GoodsList v-bind:goods="filteredGoods" />
+    <Error : v-bind:error ="error" /> 
+
   </div>
 </template>
 
@@ -22,6 +24,7 @@ export default {
     return {
       goods: [],
       basket: [],
+      error: false,
     };
   },
   created() {
@@ -48,6 +51,7 @@ export default {
             resolve();
           })
           .catch((err) => {
+            this.error = true;
             reject(err);
           });
       });
