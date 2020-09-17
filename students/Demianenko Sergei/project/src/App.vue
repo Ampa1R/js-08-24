@@ -13,6 +13,9 @@
 <script>
 import Header from './components/Header.vue';
 import GoodsList from './components/GoodsList.vue';
+import Basket from './components/Basket.vue';
+import SearchText from './components/SearchText.vue';
+import Error from './components/Error.vue';
 const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 export default {
   name: 'App',
