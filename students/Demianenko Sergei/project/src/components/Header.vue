@@ -5,8 +5,7 @@
         </div>
         <div class="searchText">
             <slot name="searchText"></slot>
-        </div>    
-        </div>
+        </div>        
         <button type="button" class="cart-button" @click="isBasketVisible = !isBasketVisible">Корзина</button>        
     </header>
 </template>
