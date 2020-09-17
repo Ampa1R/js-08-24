@@ -1,4 +1,4 @@
-<template>
+<template v-slot:basket>
     <header>
         <div v-if="isBasketVisible" class="basket">
             <div class="basket__item" v-for="basketItem in basket" v-bind:key="basketItem.id_product">

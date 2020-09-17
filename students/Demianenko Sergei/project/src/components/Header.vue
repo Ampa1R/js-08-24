@@ -1,12 +1,12 @@
 <template>
     <header>
         <div v-if="isBasketVisible" class="basket">
-            <slot \>
+            <slot name="basket"></slot>
         </div>
         <div class="searchText">
-            <slot \>    
-        </div> 
-
+            <slot name="searchText"></slot>
+        </div>    
+        </div>
         <button type="button" class="cart-button" @click="isBasketVisible = !isBasketVisible">Корзина</button>        
     </header>
 </template>

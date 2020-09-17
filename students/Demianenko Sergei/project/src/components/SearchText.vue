@@ -1,4 +1,4 @@
-<template>  
+<template v-slot:searchText>  
     <div class="searchText">
         <input type="text" class="search" v-model="searchText" />
     </div>

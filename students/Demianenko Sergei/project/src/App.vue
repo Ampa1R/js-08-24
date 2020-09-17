@@ -2,11 +2,10 @@
   <div id="app">
     <Header >
       <SearchText :searchText="searchText" />
-        <Basket :basket="basket" />
+      <Basket :basket="basket" />
     </Header>
     <GoodsList v-bind:goods="filteredGoods" />
     <Error : v-bind:error ="error" /> 
-
   </div>
 </template>
 
@@ -30,6 +29,7 @@ export default {
     return {
       goods: [],
       basket: [],
+      searchText: '',
       error: false,
     };
   },
