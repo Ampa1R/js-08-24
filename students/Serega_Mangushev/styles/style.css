@@ -557,6 +557,21 @@ input:-webkit-autofill {
 
 .shop__not-found{ 
   padding: 10px 3px;
+} 
+
+.basket__removeEl{  
+  padding: 5px;
+  width: 50px;    
+  color: #000;
+  transform: scale(1);
+  transition: 0.1s; 
+} 
+
+.basket__removeEl:hover{     
+  width: 100%;    
+  color: #fff;
+  border-radius: 3px; 
+  background-color: #333;
 }
 
 @media (max-width: 768px){   
@@ -568,7 +583,7 @@ input:-webkit-autofill {
   .shop__404-img{   
     width: 100%;
   }
-} 
+}  
 
 @media (max-width: 576px){   
 

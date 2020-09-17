@@ -221,15 +221,16 @@ const bodyApp = new Vue({
   data: {
     product: {
       goods: [],
-      serchProduct: "", 
-      notFound: { 
-        title: 'Нам жаль', 
-        text: 'Товар не найден',
+      serchProduct: "",
+      notFound: {
+        title: "Нам жаль",
+        text: "Товар не найден",
       },
-    }, 
+    },
 
-    basket: { 
+    basket: {
       isVisibleCart: true,
+      basketItems: [],
     },
   },
 
@@ -240,9 +241,9 @@ const bodyApp = new Vue({
   computed: {
     getFilter() {
       const self = this.product;
-      const reg = new RegExp(self.serchProduct, "i"); 
+      const reg = new RegExp(self.serchProduct, "i");
       console.log(self.goods);
-      return self.goods.filter((item) => reg.test(item.name)); 
+      return self.goods.filter((item) => reg.test(item.name));
     },
   },
 
@@ -259,6 +260,46 @@ const bodyApp = new Vue({
     sum(express) {
       const self = this.product;
       return self.goods.reduce((all, cur) => all + getSumObj(cur, express), 0);
+    },
+
+    addElement(basketItem) {
+      const self = this.basket;
+      const isItemBasket = self.basketItems.find(
+        (item) => item.basketItem.id === basketItem.id
+      );
+      if (isItemBasket) {
+        console.log("Элемент уже в корзине.");
+        isItemBasket.count++;
+      } else {
+        self.basketItems.push({
+          basketItem,
+          count: 1,
+        });
+      }
+      /*
+      if (self.basketItems.includes(basketItem)) {   
+        console.log(self.basketItems);   
+        
+        
+      } else {
+        this.basket.basketItems.push(basketItem);
+        console.log(basketItem);
+      } 
+      */
+    },
+
+    removeElement(element) { 
+      console.log(element)
+      const self = this.basket;
+      const i = self.basketItems.findIndex(
+        (item) => item.basketItem.id === element.basketItem.id
+      );
+      const productInBasket = self.basketItems[i];
+      if (productInBasket && productInBasket.count > 1) {
+        productInBasket.count--;
+      } else {
+        self.basketItems.splice(i, 1);
+      }
     },
   },
 });

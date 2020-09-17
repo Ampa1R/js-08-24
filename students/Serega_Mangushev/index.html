@@ -33,37 +33,27 @@
                                 <path
                                     d="M25 6a9.894 9.894 0 00-10 10 10 10 0 0020 0A9.894 9.894 0 0025 6zm5 11h-4v4a1 1 0 01-2 0v-4h-4a1 1 0 010-2h4v-4a1 1 0 012 0v4h4a1 1 0 010 2z" />
                             </svg> </a>
-                        <div class="popup__basket shop">
+                        <div v-if="basket.basketItems.length !== 0" class="popup__basket shop">
                             <div class="shop__popup">
                                 <div class="shop__product-basket product basket">
-                                    <div class="basket__item"> <span
-                                            class="product__price product__price_demonstrative">57
-                                            Р</span>
+                                    <div class="basket__item" v-for="item in basket.basketItems"> <span v-if="item.count < 5"
+                                            class="product__price product__price_demonstrative">{{item.basketItem.price}}
+                                            Р &rArr; X {{item.count}}</span> 
+                                             
+                                            <span v-else
+                                            class="product__price product__price_demonstrative">{{item.basketItem.price}}
+                                            Р &rArr; X {{item.count = 5}}</span>
                                         <picture>
-                                            <source srcset="./image/coffee1.webp" type="image/webp"><img
-                                                class="basket__img" src="./image/coffee1.png" alt=""></picture>
-                                        <p class="basket__product-description">Шоколадное кофе</p>
-                                    </div>
-                                    <div class="basket__item"> <span
-                                            class="product__price product__price_demonstrative">57
-                                            Р</span>
-                                        <picture>
-                                            <source srcset="./image/coffee1.webp" type="image/webp"><img
-                                                class="basket__img" src="./image/coffee1.png" alt=""></picture>
-                                        <p class="basket__product-description">Шоколадное кофе</p>
-                                    </div>
-                                    <div class="basket__item"> <span
-                                            class="product__price product__price_demonstrative">57
-                                            Р</span>
-                                        <picture>
-                                            <source srcset="./image/coffee1.webp" type="image/webp"><img
-                                                class="basket__img" src="./image/coffee1.png" alt=""></picture>
-                                        <p class="basket__product-description">Шоколадное кофе</p>
+                                            <source :srcset="item.basketItem.image" type="image/webp">
+                                                <img class="basket__img" :src="item.basketItem.image" alt="Кофе"> 
+                                            </picture>
+                                        <p class="basket__product-description">{{item.basketItem.name}}</p> 
+                                        <button @click="() => removeElement(item)" class="basket__removeEl btn">&#10006;</button>
                                     </div>
                                 </div>
                                 <div class="shop__popup-result">
                                     <p class="basket__product-description basket__product-description_allocated">Итог
-                                        333 Р
+                                        {{333}} Р
                                     </p>
                                 </div>
                             </div>
@@ -80,11 +70,11 @@
                         <span class="shop__max-price">Общая цена товаров на сумму: {{sum("count * price")}} Р</span>
                         <div v-if="getFilter.length" class="shop__list list-row">
                             <div class="shop__product product" v-for="item in getFilter">
-                                <img class="product__img" :src="item.image" alt="Черное">
+                                <img class="product__img" :src="item.image" alt="Кофе">
                                 <div class="product__group">
                                     <p class="product-description">{{item.name}}</p>
                                     <span class="product__price">{{item.price}} Р</span>
-                                    <button class="product__btn btn">Заказать</button>
+                                    <button @click='() => addElement(item)' class="product__btn btn">Заказать</button>
                                 </div>
                             </div>
                         </div>
