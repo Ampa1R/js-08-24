@@ -22,6 +22,9 @@ export default {
   components: {
     Header,
     GoodsList,
+    Basket,
+    SearchText,
+    Error,
   },
   data() {
     return {
