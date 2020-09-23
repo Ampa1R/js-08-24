@@ -1,0 +1,28 @@
+// out: style.css, compress: false
+
+@import 'calc.less';
+
+.justify(@justify, @align) {
+  justify-content: @justify;
+  align-items: @align;
+}
+
+body {
+  padding: 50px;
+  background: #ccc;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.row_margined {
+  margin: 0 0 2em 0;
+}

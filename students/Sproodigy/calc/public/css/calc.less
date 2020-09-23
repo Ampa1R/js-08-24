@@ -1,0 +1,37 @@
+// main: style.less
+
+.calc {
+  width: 40%;
+  padding: 30px;
+  border: 3px solid #A63400;
+  font-size: 2em;
+  display: flex;
+  flex-wrap: wrap;
+
+  &__input-wrp {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 .5em 0;
+  }
+
+  &__operand {
+    width: 20%;
+  }
+
+  &__operator,
+  &__equal {
+    margin: 0 .5em;
+  }
+}
+
+.result {
+  width: 100%;
+  margin: 1em 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn_result {
+  width: 50%;
+}

@@ -107,29 +107,27 @@ function saveLogActions(req, res, action, itemName) {
     }
 
     const stat = JSON.parse(data)
+    const matchEntry = stat.find(item => item.good === itemName)
     const date = new Date().toLocaleDateString()
+    const time = new Date().toLocaleTimeString()
     const newEntry = {
       good: itemName,
       data: {
         [date]: {
-          [action]: 1,
+          [time]: {
+            action: action,
+          }
         }
       },
     }
 
-    const matchEntry = stat.find(item => item.good === itemName)
-
     if (matchEntry) {
       if (!matchEntry.data[date]) {
-        matchEntry.data[date] = { [action]: 1 }
-      } else if (!matchEntry.data[date][action]) {
-        matchEntry.data[date][action] = 1
-      } else if (matchEntry.data[date][action]) {
-        matchEntry.data[date][action]++
+        matchEntry.data[date] = { [time]: { action: action } }
+      } else if (!matchEntry.data[date][time]) {
+        matchEntry.data[date][time] = { action: action }
       }
-    } else {
-      stat.push(newEntry)
-    }
+    } else stat.push(newEntry)
 
     fs.writeFile('./stat.json', JSON.stringify(stat, null, 2), (err) => {
       if (err) {

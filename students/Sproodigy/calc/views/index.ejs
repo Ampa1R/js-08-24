@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <div class="calc">
+      <div class="calc__input-wrp">
+        <input type="text" class="calc__operand">
+        <span class="calc__operator">+</span>
+        <input type="text" class="calc__operand">
+        <span class="calc__equal">=</span>
+        <span class="calc__result"></span>
+      </div>
+      <div class="row">
+        <button class="btn">Add</button>
+        <button class="btn">Subtr</button>
+        <button class="btn">Mul</button>
+        <button class="btn">Div</button>
+      </div>
+    </div>
+    <script src="/dist/bundle.js"></script>
+    <script>
+      document.querySelectorAll('.btn')[0].addEventListener('click', () => {
+        const a = document.querySelectorAll('.calc__operand')[0].value
+        const b = document.querySelectorAll('.calc__operand')[1].value
+        document.querySelector('.calc__operator').innerHTML = '+'
+        document.querySelector('.calc__result').innerHTML = add(a, b)
+      })
+      document.querySelectorAll('.btn')[1].addEventListener('click', () => {
+        const a = document.querySelectorAll('.calc__operand')[0].value
+        const b = document.querySelectorAll('.calc__operand')[1].value
+        document.querySelector('.calc__operator').innerHTML = '-'
+        document.querySelector('.calc__result').innerHTML = subtr(a, b)
+      })
+      document.querySelectorAll('.btn')[2].addEventListener('click', () => {
+        const a = document.querySelectorAll('.calc__operand')[0].value
+        const b = document.querySelectorAll('.calc__operand')[1].value
+        document.querySelector('.calc__operator').innerHTML = '*'
+        document.querySelector('.calc__result').innerHTML = mul(a, b)
+      })
+      document.querySelectorAll('.btn')[3].addEventListener('click', () => {
+        const a = document.querySelectorAll('.calc__operand')[0].value
+        const b = document.querySelectorAll('.calc__operand')[1].value
+        document.querySelector('.calc__operator').innerHTML = '/'
+        document.querySelector('.calc__result').innerHTML = div(a, b)
+      })
+    </script>
+  </body>
+</html>
