@@ -7,7 +7,7 @@
             <div class="goods-item" v-for="item in goods" v-bind:key="item.id_product">
                 <h3>{{ item.product_name }}</h3>
                 <p>{{ item.price }}</p>
-                <button @click="addToBasket(item)">Buy</button>
+                <button @click='$emit("add-basket", item)'>Buy</button>
             </div>
         </div>
         <div v-else class="goods-list__empty">Нет данных</div>
@@ -21,11 +21,6 @@ export default {
         goods: Array,
         apiError: Boolean,
     },
-    methods: {
-        addToBasket() {
-            //
-        }
-    }
 }
 </script>
 

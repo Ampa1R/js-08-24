@@ -3,7 +3,8 @@
             <div class="basket__item" v-for="basketItem in basket" v-bind:key="basketItem.id_product">
                 <h4>{{ basketItem.product_name }}</h4>
                 <p>{{ basketItem.price }}</p>
-                <button @click="removeFromBasket(basketItem.id_product)">Удалить</button>
+                <p>Колличество: {{basketItem.count}} шт.</p>
+                <button @click="$emit('remove-basket-item', basketItem.id_product)">Удалить</button>
             </div>
         </div>
 </template>

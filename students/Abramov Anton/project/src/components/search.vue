@@ -1,11 +1,11 @@
 <template>
-  <input type="text" class="search" @input="$emit('change-search', $event.target.value)" :value="searchText"/>
+  <input type="text" class="search" @input="$emit('input', $event.target.value)" :value="value"/>
 </template>
 
 <script>
 export default {
     name: "Search",
-    props: ['searchText'],
+    props: ['value'],
 }
 </script>
 

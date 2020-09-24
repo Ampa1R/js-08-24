@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <Header @basket-click="handleBasketToggle">
-      <Basket :basket="basket" :isBasketVisible="isBasketVisible"/>
-      <Search @change-search="handleChangeSearch" :searchText="searchText" />
+      <Basket @remove-basket-item="removeFromBasket" :basket="basket" :isBasketVisible="isBasketVisible"/>
+      <Search v-model="searchText" />
     </Header>
-    <GoodsList :goods="filteredGoods" :apiError="apiError" />
+    <GoodsList @add-basket="addItemOnBasket" :goods="filteredGoods" :apiError="apiError" />
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import Basket from './components/Basket.vue';
 import Search from './components/search.vue';
 import GoodsList from './components/GoodsList.vue';
 
-const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const API = 'http://localhost:3000';
 
 export default {
   name: 'App',
@@ -35,7 +35,9 @@ export default {
   },
   created() {
     this.fetchGoods();
+    this.syncForBasket();
   },
+
   computed: {
     filteredGoods() {
       const regexp = new RegExp(this.searchText, 'i');
@@ -43,14 +45,16 @@ export default {
     },
     total() {
       return this.goods.reduce((acc, cur) => acc + cur.price, 0);
+      },
     },
-  },
+  
   methods: {
     fetchGoods() {
       return new Promise((resolve, reject) => {
-        fetch(`${API}/catalogData.json`)
+        fetch(`${API}/catalog`)
           .then((res) => {
-            return res.json();
+            
+            return res.json(); //! Что за метод?????
           })
           .then((goods) => {
             this.goods = goods;
@@ -62,21 +66,55 @@ export default {
           });
       });
     },
-    // toggleBasketVisible() {
-    //   this.isBasketVisible = !this.isBasketVisible;
-    // },
-    addToBasket(item) {
-      this.basket.push(item);
-    },
+    addItemOnBasket(item) {
+        fetch(`${API}/basket`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify(item),
+        })
+        .then(() => {
+          this.syncForBasket();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      },
+
+      syncForBasket() {
+        fetch(`${API}/basket`)
+        .then((res) => {
+          return res.json();
+        })
+        .then((basketItems) => {
+            this.basket = basketItems;
+          })
+          .catch((err) => {
+            this.apiError = true;
+            console.log(err);
+          });
+      },
+//     makePOSTRequest (url, data, callback) {
+// //99999999999999
+//     },
     removeFromBasket(id) {
-      this.basket = this.basket.filter(({ id_product }) => id_product !== id);
+      fetch(`${API}/basket`, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify([id]),
+        })
+        .then(() => {
+          this.syncForBasket();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     handleBasketToggle() {
       this.isBasketVisible = !this.isBasketVisible;
-    },
-    handleChangeSearch(newText) {
-      console.log(newText);
-      this.searchText = newText;
     },
   },
 }
