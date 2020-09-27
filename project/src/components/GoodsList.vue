@@ -1,10 +1,10 @@
 <template>
     <main>
         <div v-if="goods.length" class="goods-list">
-            <div class="goods-item" v-for="item in goods" v-bind:key="item.id_product">
-                <h3>{{ item.product_name }}</h3>
+            <div class="goods-item" v-for="item in goods" v-bind:key="item.id">
+                <h3>{{ item.name }}</h3>
                 <p>{{ item.price }}</p>
-                <button @click="addToBasket(item)">Buy</button>
+                <button @click="handleButtonClick(item)">Buy</button>
             </div>
         </div>
         <div v-else class="goods-list__empty">Нет данных</div>
@@ -18,8 +18,8 @@ export default {
         goods: Array,
     },
     methods: {
-        addToBasket() {
-            //
+        handleButtonClick(item) {
+            this.$eventBus.$emit('button-click', item);
         }
     }
 }
