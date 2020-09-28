@@ -12,7 +12,7 @@
                 <td></td>
                 <td>{{ good.product_name }}</td>
                 <td>{{ good.quantity }}</td>
-                <td>{{ good.price * good.quantity }}</td>
+                <td>{{ good.price }}</td>
                 <td><button type="button" @click="$emit('remove-item', good)">Delete</button></td>
             </tr>
             <tr>
@@ -34,22 +34,19 @@
 <script>
 export default {
   name: 'Basket',
-  props: {
-    goods_basket: Array, 
-    isVisibleCart: Boolean,
-    total: Number,
-  }
+  props: ['goods_basket', 'isVisibleCart', 'total'],
 }
 
 </script>
 
-<style>
+<style scoped>
 .table-basket {
     position: absolute;
     right: 5%;
     top: 10%;
-    padding: 20px;
+    padding: 10px;
     outline: 2px solid gray;
+    background-color: white;
 }
 
 td {

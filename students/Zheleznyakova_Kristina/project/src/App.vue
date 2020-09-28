@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <Header v-on:show-basket="showBasket">
-      <Search v-on:filter-goods="filterGoods" />
+      <Search v-model="searchLine" />
       <Basket :goods_basket='goods_basket' :isVisibleCart='isVisibleCart' :total="total" v-on:remove-item="remove_item" />
     </Header>    
-    <GoodsList :goods="filteredGoods" v-on:add-good="addItemBasket" />
+    <GoodsList :goods="goods" v-on:add-good="addItemBasket" />
     <Error v-if='isError' :error="isError" />
   </div>
 </template>
@@ -17,7 +17,7 @@ import Search    from './components/Search.vue';
 import Basket    from './components/Basket.vue';
 import Error     from './components/Error.vue';
 
-const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const API_URL = 'http://localhost:3000';
 
 export default {
   name: 'App',
@@ -28,47 +28,85 @@ export default {
     Basket,
     Error,
   },
-  data() {
+  data() 
+  {
     return {
       goods: [],
       goods_basket: [],
-      filteredGoods: [], 
       isVisibleCart: false, 
       isError: '',
+      searchLine: '',
     }
   },
-  created() {
+  created() 
+  {
     this.fetchGoods();
+    this.fetchBasket();
   },
   computed: {
     total() 
     {
-      return this.goods_basket.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+      return this.goods_basket.reduce((acc, cur) => acc + cur.price, 0);
+    },
+    filteredGoods()
+    {
+      const regexp = new RegExp(this.searchLine, 'i');
+
+      return this.goods.filter(item => regexp.test(item.product_name));
     },
   },
   methods: {
-    fetchGoods() 
+    fetchGoods()
     {
-      fetch(`${API_URL}/catalogData.json`)
+      fetch(`${API_URL}/catalog`)
         .then((response) => response.json())
-        .then((data) => 
-        {
-          this.goods         = data;
-          this.filteredGoods = data;
-        })
-        .catch(err => 
-        {
-          console.log("Ошибка: " + err);
-
-          this.isError = err;
-        })   
+        .then((data) => this.goods = data)
+        .catch(err => this.isError = err)   
     },
-    filterGoods(searchLine)
+    fetchBasket()
     {
-      const regexp              = new RegExp(searchLine, 'i');
-
-      return this.filteredGoods = this.goods.filter(item => regexp.test(item.product_name));
-    }, 
+      fetch(`${API_URL}/cart`)
+        .then((response) => response.json())
+        .then((data) => this.goods_basket = data)
+        .catch(err => this.isError = err)  
+    },
+    addToBasket(item)
+    {
+      fetch(`${API_URL}/addToCart`, 
+      {
+        method: 'POST', 
+        body: JSON.stringify(item),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(() => this.goods_basket.push(item))
+        .catch(err => this.isError = err)  
+    },
+    increaseAmountToBasket(item)
+    {
+      fetch(`${API_URL}/increaseAmountToCart`, 
+      {
+        method: 'POST', 
+        body: JSON.stringify(item),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .catch(err => this.isError = err)
+    },
+    decreaseOrDelAmountToBasket(item)
+    {
+      fetch(`${API_URL}/decreaseOrRemoveAmount`, 
+      {
+        method: 'POST', 
+        body: JSON.stringify(item),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .catch(err => this.isError = err)
+    },
     showBasket() 
     {
       return this.isVisibleCart = !this.isVisibleCart;      
@@ -77,20 +115,21 @@ export default {
     {
       const itemIndex = this.goods_basket.findIndex((goodsItem) => goodsItem.id_product === item.id_product);
         
-      if (itemIndex !== -1) this.goods_basket[itemIndex].quantity++;
-      else this.goods_basket.push({ ...item, quantity: 1 });
+      if (itemIndex !== -1) {
+        this.increaseAmountToBasket(item);
+
+        this.goods_basket[itemIndex].quantity++;
+      } else this.addToBasket({ ...item, quantity: 1 });
     },
-    get_basket_items()
-    {
-      return this.goods_basket;
-    },   
     remove_item(item) 
     {    
       const itemIndex = this.goods_basket.findIndex((goodsItem) => goodsItem.id_product === item.id_product);
         
       if (itemIndex !== -1) 
-      {
-        if (item.quantity > 1) item.quantity--
+      { 
+        this.decreaseOrDelAmountToBasket(item);
+
+        if (item.quantity > 1) this.goods_basket[itemIndex].quantity--;
         else this.goods_basket.splice(itemIndex, 1);
       }
     },
@@ -98,7 +137,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
