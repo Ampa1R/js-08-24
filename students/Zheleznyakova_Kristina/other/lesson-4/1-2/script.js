@@ -16,3 +16,4 @@ console.log(txt.replace(regexp, `"`));
 const new_txt = txt.replace(/(?<=\w)'(?=\w)/g, '---').replace(/'/g, '"').replace(/---/g, `'`);
 
 console.log(new_txt);
+//(\B)'|'(\B)
