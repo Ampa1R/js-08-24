@@ -4,7 +4,7 @@
       <Search v-model="searchLine" />
       <Basket :goods_basket='goods_basket' :isVisibleCart='isVisibleCart' :total="total" v-on:remove-item="remove_item" />
     </Header>    
-    <GoodsList :goods="goods" v-on:add-good="addItemBasket" />
+    <GoodsList :goods="filteredGoods" v-on:add-good="addItemBasket" />
     <Error v-if='isError' :error="isError" />
   </div>
 </template>
@@ -52,7 +52,7 @@ export default {
     {
       const regexp = new RegExp(this.searchLine, 'i');
 
-      return this.goods.filter(item => regexp.test(item.product_name));
+      return this.goods.filter((item) => regexp.test(item.product_name));
     },
   },
   methods: {
@@ -70,7 +70,7 @@ export default {
         .then((data) => this.goods_basket = data)
         .catch(err => this.isError = err)  
     },
-    addToBasket(item)
+    addItemBasket(item)
     {
       fetch(`${API_URL}/addToCart`, 
       {
@@ -80,22 +80,15 @@ export default {
           'Content-Type': 'application/json'
         }
       })
-        .then(() => this.goods_basket.push(item))
+        .then(() => {
+          const itemIndex = this.goods_basket.findIndex((goodsItem) => goodsItem.id_product === item.id_product);
+        
+          if (itemIndex !== -1) this.goods_basket[itemIndex].quantity++;
+          else this.goods_basket.push({ ...item, quantity: 1 });
+        })
         .catch(err => this.isError = err)  
     },
-    increaseAmountToBasket(item)
-    {
-      fetch(`${API_URL}/increaseAmountToCart`, 
-      {
-        method: 'POST', 
-        body: JSON.stringify(item),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .catch(err => this.isError = err)
-    },
-    decreaseOrDelAmountToBasket(item)
+    remove_item(item)
     {
       fetch(`${API_URL}/decreaseOrRemoveAmount`, 
       {
@@ -105,39 +98,25 @@ export default {
           'Content-Type': 'application/json'
         }
       })
+        .then(() => {
+          const itemIndex = this.goods_basket.findIndex((goodsItem) => goodsItem.id_product === item.id_product);
+        
+          if (itemIndex !== -1) { 
+            if (item.quantity > 1) this.goods_basket[itemIndex].quantity--;
+            else this.goods_basket.splice(itemIndex, 1);
+          }})
         .catch(err => this.isError = err)
     },
     showBasket() 
     {
       return this.isVisibleCart = !this.isVisibleCart;      
     },
-    addItemBasket(item)
-    {
-      const itemIndex = this.goods_basket.findIndex((goodsItem) => goodsItem.id_product === item.id_product);
-        
-      if (itemIndex !== -1) {
-        this.increaseAmountToBasket(item);
-
-        this.goods_basket[itemIndex].quantity++;
-      } else this.addToBasket({ ...item, quantity: 1 });
-    },
-    remove_item(item) 
-    {    
-      const itemIndex = this.goods_basket.findIndex((goodsItem) => goodsItem.id_product === item.id_product);
-        
-      if (itemIndex !== -1) 
-      { 
-        this.decreaseOrDelAmountToBasket(item);
-
-        if (item.quantity > 1) this.goods_basket[itemIndex].quantity--;
-        else this.goods_basket.splice(itemIndex, 1);
-      }
-    },
   },
 }
 </script>
 
 <style scoped>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -150,4 +129,5 @@ body {
     margin: 0;
     padding: 0;
 }
+
 </style>
